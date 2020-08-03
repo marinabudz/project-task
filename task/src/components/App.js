@@ -1,26 +1,26 @@
 import React, { Component } from "react";
 import UserInfo from "./user-info";
 const people = {
-  jan: [],
-  feb: [],
-  mar: [],
-  apr: [],
-  may: [],
-  jun: [],
-  jul: [],
-  aug: [],
-  sept: [],
-  oct: [],
-  nov: [],
-  dec: []
+  Jan: [],
+  Feb: [],
+  Mar: [],
+  Apr: [],
+  May: [],
+  Jun: [],
+  Jul: [],
+  Aug: [],
+  Sept: [],
+  Oct: [],
+  Nov: [],
+  Dec: []
 };
 export default class App extends Component {
   state = {
     data: [],
     months: [],
-    jan: false,
-    feb: false,
-    mar: false,
+    Jan: false,
+    Feb: false,
+    Mar: false,
     apr: false,
     may: false,
     jun: false,
@@ -29,7 +29,8 @@ export default class App extends Component {
     sept: false,
     oct: false,
     nov: false,
-    dec: false
+    dec: false,
+    btn: true
   };
   componentDidMount() {
     fetch("https://yalantis-react-school-api.yalantis.com/api/task0/users")
@@ -47,137 +48,106 @@ export default class App extends Component {
     const { data } = this.state;
     if (!data) return;
     let arr = [];
-    const { jan } = this.state;
     const month = data.map(({ dob, firstName, lastName }) => {
       const person = `${firstName} ${lastName}`;
       const date = new Date(dob);
-      const months = date.getMonth() + 1;
+      const months = date.toLocaleString("en", { month: "short" });
       arr.push(months);
       let unique = arr.filter(this.onlyUnique).sort(this.sortItems);
       this.setState({
         months: [...unique]
       });
       this.checkMonth(months, person);
+      this.setState({ btn: false });
     });
   };
-  checkMonth = (months, person) => {
-    switch (months) {
-      case 1:
-        return people.jan.push(person);
-      case 2:
-        return people.feb.push(person);
-      case 3:
-        return people.mar.push(person);
-      case 4:
-        return people.apr.push(person);
-      case 5:
-        return people.may.push(person);
-      case 6:
-        return people.jun.push(person);
-      case 7:
-        return people.jul.push(person);
-      case 8:
-        return people.aug.push(person);
-      case 9:
-        return people.sept.push(person);
-      case 10:
-        return people.oct.push(person);
-      case 11:
-        return people.nov.push(person);
-      case 12:
-        return people.dec.push(person);
-      default:
-        break;
+  checkMonth = (month, person) => {
+    if (month === "Jan") people.Jan.push(person);
+    if (month === "Feb") people.Feb.push(person);
+    if (month === "Mar") people.Mar.push(person);
+    if (month === "Apr") people.Apr.push(person);
+    if (month === "May") people.May.push(person);
+    if (month === "Jun") people.Jun.push(person);
+    if (month === "Jul") people.Jul.push(person);
+    if (month === "Aug") people.Aug.push(person);
+    if (month === "Sept") people.Sept.push(person);
+    if (month === "Oct") people.Oct.push(person);
+    if (month === "Nov") people.Nov.push(person);
+    if (month === "Dec") people.Dec.push(person);
+    else {
+      return <p> value undefined</p>;
     }
   };
 
   hoverUsers = month => {
-    switch (month) {
-      case 1:
-        this.setState({ jan: !this.state.jan });
-        break;
-      case 2:
-        this.setState({ feb: !this.state.feb });
-        break;
-      case 3:
-        this.setState({ mar: !this.state.mar });
-        break;
-      case 4:
-        this.setState({ apr: !this.state.apr });
-        break;
-      case 5:
-        this.setState({ may: !this.state.may });
-        break;
-      case 6:
-        this.setState({ jun: !this.state.jun });
-        break;
-      case 7:
-        this.setState({ jul: !this.state.jul });
-        break;
-      case 8:
-        this.setState({ aug: !this.state.aug });
-        break;
-      case 9:
-        this.setState({ sept: !this.state.sept });
-        break;
-      case 10:
-        this.setState({ oct: !this.state.oct });
-        break;
-      case 11:
-        this.setState({ nov: !this.state.nov });
-        break;
-      case 12:
-        this.setState({ dec: !this.state.dec });
-        break;
-      default:
-        break;
-    }
+    if (month === "Jan") this.setState({ jan: !this.state.jan });
+    if (month === "Feb") this.setState({ feb: !this.state.feb });
+    if (month === "Mar") this.setState({ mar: !this.state.mar });
+    if (month === "Apr") this.setState({ apr: !this.state.apr });
+    if (month === "May") this.setState({ may: !this.state.may });
+    if (month === "Jun") this.setState({ jun: !this.state.jun });
+    if (month === "Jul") this.setState({ jul: !this.state.jul });
+    if (month === "Aug") this.setState({ aug: !this.state.aug });
+    if (month === "Sept") this.setState({ sept: !this.state.sept });
+    if (month === "Oct") this.setState({ oct: !this.state.oct });
+    if (month === "Nov") this.setState({ nov: !this.state.nov });
+    if (month === "Dec") this.setState({ dec: !this.state.dec });
   };
 
   render() {
     const {
-      jan,
-      feb,
-      mar,
-      apr,
-      may,
-      jun,
-      jul,
-      aug,
-      sept,
-      oct,
-      nov,
-      dec
+      Jan,
+      Feb,
+      Mar,
+      Apr,
+      May,
+      Jun,
+      Jul,
+      Aug,
+      Sept,
+      Oct,
+      Nov,
+      Dec
     } = people;
-
+    if (this.state.btn) {
+      return (
+        <div className=" mt-5 text-center">
+          <button
+            onClick={this.handleMonth}
+            className="btn btn-info btn-lg text-center"
+          >
+            Months
+          </button>
+        </div>
+      );
+    }
     return (
-      <div>
-        <button onClick={this.handleMonth}> click</button>
-        <div>{this.handleMonth}</div>
-        <ul>
-          {this.state.months.map(month => (
-            <>
-              <li
-                onMouseEnter={() => this.hoverUsers(month)}
-                onMouseLeave={() => this.hoverUsers(month)}
-              >
-                {month}
-              </li>
-            </>
-          ))}
-        </ul>
-        {this.state.jan && <UserInfo users={jan} />}
-        {this.state.feb && <UserInfo users={feb} />}
-        {this.state.mar && <UserInfo users={mar} />}
-        {this.state.apr && <UserInfo users={apr} />}
-        {this.state.may && <UserInfo users={may} />}
-        {this.state.jun && <UserInfo users={jun} />}
-        {this.state.jul && <UserInfo users={jul} />}
-        {this.state.aug && <UserInfo users={aug} />}
-        {this.state.sept && <UserInfo users={sept} />}
-        {this.state.oct && <UserInfo users={oct} />}
-        {this.state.nov && <UserInfo users={nov} />}
-        {this.state.dec && <UserInfo users={dec} />}
+      <div className="d-flex flex-row">
+        {this.state.months.map(month => (
+          <p
+            className="mr-5"
+            onMouseEnter={() => this.hoverUsers(month)}
+            onMouseLeave={() => this.hoverUsers(month)}
+          >
+            {month}
+          </p>
+        ))}
+        <div className="d-flex flex-column">
+          <div className="font-weight-bold"> Users</div>
+          {this.state.jan && <UserInfo users={Jan} />}
+          {this.state.jan && <UserInfo users={Jan} />}
+          {this.state.feb && <UserInfo users={Feb} />}
+          {this.state.mar && <UserInfo users={Mar} />}
+          {this.state.apr && <UserInfo users={Apr} />}
+          {this.state.may && <UserInfo users={May} />}
+          {this.state.jun && <UserInfo users={Jun} />}
+          {this.state.jul && <UserInfo users={Jul} />}
+          {this.state.aug && <UserInfo users={Aug} />}
+          {this.state.sept && <UserInfo users={Sept} />}
+          {this.state.oct && <UserInfo users={Oct} />}
+          {this.state.nov && <UserInfo users={Nov} />}
+          {this.state.dec && <UserInfo users={Dec} />}
+        </div>
       </div>
     );
   }
